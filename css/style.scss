@@ -17,6 +17,77 @@ body {
   -ms-flex-direction: column;
   flex-direction: column;
 
+  .list {
+    border: 1px solid $red;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+
+    & > * {
+      -webkit-box-flex: 1;
+      -ms-flex: 1 1 100%;
+      flex: 1 1 100%;
+    }
+
+    .fa-window-close {
+      margin-left: 2%;
+      float: right;
+      -ms-flex-preferred-size: 12%;
+      width: 7.25%;
+      color: $maroon;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-transition: all 0.25s;
+      transition: all 0.25s;
+
+      &:hover {
+        cursor: pointer;
+        color: lighten($maroon, 10%);
+      }
+    }
+  }
+
+  .lists {
+    list-style: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 70%;
+    text-align: center;
+
+    li {
+      -webkit-transition: all 0.25s;
+      transition: all 0.25s;
+
+      &:hover {
+        cursor: pointer;
+        color: $maroon;
+        background-color: lighten(lavender, 3%);
+      }
+    }
+
+    & > * {
+      color: $olive;
+      border: 1px solid $gray;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-flex: 1;
+      -ms-flex: 1 1 100%;
+      flex: 1 1 100%;
+      font-weight: 300;
+    }
+  }
+
   .main {
     width: 70%;
     border: 1px solid goldenrod;
@@ -28,15 +99,17 @@ body {
     margin-top: 2em;
 
     #item-txt {
-      width: 70%;
+      width: 60%;
     }
 
     #date-txt {
+      margin-right: 2%;
       margin-left: 2%;
       -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
       height: 3em;
+      width: 11%;
       border-radius: 4px;
       border: 1px solid $olive;
       padding-left: 2%;
@@ -52,6 +125,11 @@ body {
       -webkit-transition: all 0.25s;
       transition: all 0.25s;
       margin-right: 2%;
+      margin-left: 2%;
+
+      &:hover {
+        color: lighten($maroon, 10%);
+      }
     }
   }
 }

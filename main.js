@@ -1,15 +1,11 @@
-var itemCompleted;
 var itemUl;
 var itemLi;
 var createItemIcon;
 var deleteBtn;
 var elementClicked;
-var completedUl = [];
-var incompleteUl = [];
 var itemList = {
   items: [],
   addItem: function (itemText, date) {
-    date = document.getElementById('date-txt');
     this.items.push({
       itemText: itemText,
       completed: false,
@@ -27,14 +23,14 @@ var itemList = {
   },
   toggleAll: function () {
     var totalItems = this.items.length;
-    var completedItems = 0;
+    var completedItems = [];
     this.items.forEach(function (item) {
       if (item.completed === true) {
-        completedItems += 1;
+        completedItems.push(item);
       }
     });
     this.items.forEach(function (item) {
-      if (completedItems === totalItems) {
+      if (completedItems.length === totalItems) {
         item.completed = false;
       } else {
         item.completed = true;
@@ -50,7 +46,6 @@ var view = {
     itemList.items.forEach(function (item, position) {
       itemLi = document.createElement('li');
       createItemIcon = document.createElement('i');
-      itemCompleted = '';
       if (item.completed === true) {
         createItemIcon.className = 'fa fa-check-circle-o';
       } else {
@@ -58,6 +53,7 @@ var view = {
       }
 
       itemLi.id = position;
+      createItemIcon.id = position + 10;
       itemLi.innerHTML = item.itemText;
       itemLi.insertBefore(createItemIcon, itemLi.firstChild);
       itemLi.appendChild(this.createDeleteBtn());
@@ -65,16 +61,15 @@ var view = {
     }, this);
   },
   createDeleteBtn: function () {
-    deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.className = 'deleteBtn';
+    deleteBtn = document.createElement('i');
+    deleteBtn.className = 'fa fa-window-close';
     return deleteBtn;
   },
   setUpEvents: function () {
     itemUl = document.querySelector('ul');
     itemUl.addEventListener('click', function (event) {
       elementClicked = event.target;
-      if (elementClicked.className === 'deleteBtn') {
+      if (elementClicked.className === 'fa fa-window-close') {
         handlers.deleteItem(parseInt(elementClicked.parentNode.id));
       }
     });
@@ -101,9 +96,7 @@ var handlers = {
     view.displayItems();
   },
   toggleComplete: function () {
-    var togglePosition = document.getElementById('toggle-position');
-    itemList.toggleComplete(togglePosition.valueAsNumber);
-    togglePosition.value = '';
+    view.createItemIcon.onclick = itemList.toggleComplete(parseInt(view.createItemIcon.id));
     view.displayItems();
   },
   toggleAll: function () {

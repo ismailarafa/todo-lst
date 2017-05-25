@@ -22,7 +22,7 @@ var view = {
 
       itemLi.id = position;
       itemLi.innerHTML = itemIcon + item.itemText;
-      itemLi.appendchild(itemIcon, thiscreateDeleteBtn());
+      itemLi.appendchild(itemIcon, this.createDeleteBtn());
       itemUl.appendchild(itemLi);
     }, this);
   }
