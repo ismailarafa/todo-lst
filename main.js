@@ -52,8 +52,8 @@ var view = {
         createItemIcon.className = 'fa fa-circle-o';
       }
 
-      itemLi.id = position;
-      createItemIcon.id = position + 10;
+      itemLi.id = position + 'li';
+      createItemIcon.id = position;
       itemLi.innerHTML = item.itemText;
       itemLi.insertBefore(createItemIcon, itemLi.firstChild);
       itemLi.appendChild(this.createDeleteBtn());
@@ -70,7 +70,7 @@ var view = {
     itemUl.addEventListener('click', function (event) {
       elementClicked = event.target;
       if (elementClicked.className === 'fa fa-window-close') {
-        handlers.deleteItem(parseInt(elementClicked.parentNode.id));
+        handlers.deleteItem(elementClicked.parentNode.id + 'li');
       }
     });
   }
@@ -96,7 +96,10 @@ var handlers = {
     view.displayItems();
   },
   toggleComplete: function () {
-    view.createItemIcon.onclick = itemList.toggleComplete(parseInt(view.createItemIcon.id));
+    var togglePosition = document.getElementsByTagName('i');
+    togglePosition.addEventListener('click', function () {
+      itemList.toggleComplete(togglePosition);
+    });
     view.displayItems();
   },
   toggleAll: function () {
