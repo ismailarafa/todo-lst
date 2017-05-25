@@ -2,6 +2,7 @@ var itemUl;
 var itemLi;
 var createItemIcon;
 var deleteBtn;
+var itemIcons;
 var elementClicked;
 var itemList = {
   items: [],
@@ -52,8 +53,7 @@ var view = {
         createItemIcon.className = 'fa fa-circle-o';
       }
 
-      itemLi.id = position + 'li';
-      createItemIcon.id = position;
+      itemLi.id = position;
       itemLi.innerHTML = item.itemText;
       itemLi.insertBefore(createItemIcon, itemLi.firstChild);
       itemLi.appendChild(this.createDeleteBtn());
@@ -68,9 +68,12 @@ var view = {
   setUpEvents: function () {
     itemUl = document.querySelector('ul');
     itemUl.addEventListener('click', function (event) {
+      debugger;
       elementClicked = event.target;
       if (elementClicked.className === 'fa fa-window-close') {
-        handlers.deleteItem(elementClicked.parentNode.id + 'li');
+        handlers.deleteItem(elementClicked.parentNode.id);
+      } else if (elementClicked.className === 'fa fa-circle-o') {
+        handlers.toggleComplete(elementClicked.parentNode.id);
       }
     });
   }
@@ -95,11 +98,9 @@ var handlers = {
     itemList.deleteItem(position);
     view.displayItems();
   },
-  toggleComplete: function () {
-    var togglePosition = document.getElementsByTagName('i');
-    togglePosition.addEventListener('click', function () {
-      itemList.toggleComplete(togglePosition);
-    });
+  toggleComplete: function (position) {
+    itemIcons[position].id = position;
+    itemList.toggleComplete(itemIcons.id.valueAsNumber);
     view.displayItems();
   },
   toggleAll: function () {
