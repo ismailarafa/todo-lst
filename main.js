@@ -3,6 +3,7 @@ var itemLi;
 var createItemIcon;
 var deleteBtn;
 var editBtn;
+var text;
 var itemInput;
 var input;
 var createSaveBtn;
@@ -18,6 +19,7 @@ var itemList = {
   },
   changeItem: function (position, itemText) {
     this.items[position].itemText = itemText;
+    return itemText;
   },
   deleteItem: function (position) {
     this.items.splice(position, 1);
@@ -84,9 +86,7 @@ var view = {
       } else if (elementClicked.className === 'fa fa-pencil-square-o') {
         handlers.changeItem(elementClicked.parentNode.id);
       } else if (elementClicked.className === 'fa fa-floppy-o') {
-        handlers.addItem(elementClicked.parentNode.id);
-      } else if (elementClicked.className === 'fa fa-floppy-o') {
-        handlers.changeItem(elementClicked.parentNode.id);
+        handlers.saveItem(elementClicked.parentNode.id);
       }
     });
   }
@@ -102,13 +102,19 @@ var handlers = {
   changeItem: function (position) {
     input = document.createElement('input');
     input.setAttribute('type', 'text');
+    itemLi = document.getElementById(position.toString());
+    input.value = itemLi.itemText;
+    itemLi.itemText = '';
     createSaveBtn = document.createElement('i');
     createSaveBtn.className = 'fa fa-floppy-o';
-    itemLi = document.getElementById(position.toString());
     itemLi.appendChild(input);
     itemLi.appendChild(createSaveBtn);
-        //    itemList.changeItem(position, input.value);
-        //    view.displayItems();
+  },
+  saveItem: function (position) {
+    itemLi = document.getElementById(position.toString());
+    text = itemLi.querySelector('input').value;
+    itemList.changeItem(position, text);
+    view.displayItems();
   },
   deleteItem: function (position) {
     itemList.deleteItem(position);
