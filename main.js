@@ -2,7 +2,6 @@ var itemUl;
 var itemLi;
 var createItemIcon;
 var deleteBtn;
-var itemIcons;
 var elementClicked;
 var itemList = {
   items: [],
@@ -74,6 +73,8 @@ var view = {
         handlers.deleteItem(elementClicked.parentNode.id);
       } else if (elementClicked.className === 'fa fa-circle-o') {
         handlers.toggleComplete(elementClicked.parentNode.id);
+      } else if (elementClicked.className === 'fa fa-check-circle-o') {
+        handlers.toggleComplete(elementClicked.parentNode.id);
       }
     });
   }
@@ -99,8 +100,7 @@ var handlers = {
     view.displayItems();
   },
   toggleComplete: function (position) {
-    itemIcons[position].id = position;
-    itemList.toggleComplete(itemIcons.id.valueAsNumber);
+    itemList.toggleComplete(position);
     view.displayItems();
   },
   toggleAll: function () {
