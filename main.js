@@ -100,7 +100,6 @@ var handlers = {
     view.displayItems();
   },
   changeItem: function (position) {
-    debugger;
     input = document.createElement('input');
     input.setAttribute('type', 'text');
     createSaveBtn = document.createElement('i');
