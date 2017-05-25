@@ -2,6 +2,10 @@ var itemUl;
 var itemLi;
 var createItemIcon;
 var deleteBtn;
+var editBtn;
+var itemInput;
+var input;
+var createSaveBtn;
 var elementClicked;
 var itemList = {
   items: [],
@@ -45,6 +49,8 @@ var view = {
     itemUl.innerHTML = '';
     itemList.items.forEach(function (item, position) {
       itemLi = document.createElement('li');
+      editBtn = document.createElement('i');
+      editBtn.className = 'fa fa-pencil-square-o';
       createItemIcon = document.createElement('i');
       if (item.completed === true) {
         createItemIcon.className = 'fa fa-check-circle-o';
@@ -56,6 +62,7 @@ var view = {
       itemLi.innerHTML = item.itemText;
       itemLi.insertBefore(createItemIcon, itemLi.firstChild);
       itemLi.appendChild(this.createDeleteBtn());
+      itemLi.insertBefore(editBtn, itemLi.lastChild);
       itemUl.appendChild(itemLi);
     }, this);
   },
@@ -67,7 +74,6 @@ var view = {
   setUpEvents: function () {
     itemUl = document.querySelector('ul');
     itemUl.addEventListener('click', function (event) {
-      debugger;
       elementClicked = event.target;
       if (elementClicked.className === 'fa fa-window-close') {
         handlers.deleteItem(elementClicked.parentNode.id);
@@ -75,6 +81,10 @@ var view = {
         handlers.toggleComplete(elementClicked.parentNode.id);
       } else if (elementClicked.className === 'fa fa-check-circle-o') {
         handlers.toggleComplete(elementClicked.parentNode.id);
+      } else if (elementClicked.className === 'fa fa-pencil-square-o') {
+        handlers.changeItem(elementClicked.parentNode.id);
+      } else if (elementClicked.className === 'fa fa-floppy-o') {
+        handlers.addItem(elementClicked.parentNode.id);
       }
     });
   }
@@ -82,17 +92,21 @@ var view = {
 
 var handlers = {
   addItem: function () {
-    var itemInput = document.getElementById('item-txt');
+    itemInput = document.getElementById('item-txt');
     itemList.addItem(itemInput.value);
     itemInput.value = '';
     view.displayItems();
   },
-  changeItem: function () {
-    var changePosition = document.getElementById('change-position');
-    var changeText = document.getElementById('change-txt');
-    itemList.changeItem(changePosition.valueAsNumber, changeText.value);
-    changePosition.value = '';
-    changeText.value = '';
+  changeItem: function (position) {
+    input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.id = position;
+    createSaveBtn = document.createElement('i');
+    createSaveBtn.className = 'fa fa-floppy-o';
+    itemLi = document.querySelector('li');
+    itemLi.insertBefore(createSaveBtn, itemLi.lastChild);
+    itemLi.insertBefore(input, itemLi.childNode[2]);
+    itemList.changeItem(position, input.value);
     view.displayItems();
   },
   deleteItem: function (position) {
