@@ -85,6 +85,8 @@ var view = {
         handlers.changeItem(elementClicked.parentNode.id);
       } else if (elementClicked.className === 'fa fa-floppy-o') {
         handlers.addItem(elementClicked.parentNode.id);
+      } else if (elementClicked.className === 'fa fa-floppy-o') {
+        handlers.changeItem(elementClicked.parentNode.id);
       }
     });
   }
@@ -98,16 +100,16 @@ var handlers = {
     view.displayItems();
   },
   changeItem: function (position) {
+    debugger;
     input = document.createElement('input');
     input.setAttribute('type', 'text');
-    input.id = position;
     createSaveBtn = document.createElement('i');
     createSaveBtn.className = 'fa fa-floppy-o';
-    itemLi = document.querySelector('li');
-    itemLi.insertBefore(createSaveBtn, itemLi.lastChild);
-    itemLi.insertBefore(input, itemLi.childNode[2]);
-    itemList.changeItem(position, input.value);
-    view.displayItems();
+    itemLi = document.getElementById(position.toString());
+    itemLi.appendChild(input);
+    itemLi.appendChild(createSaveBtn);
+        //    itemList.changeItem(position, input.value);
+        //    view.displayItems();
   },
   deleteItem: function (position) {
     itemList.deleteItem(position);
