@@ -18,9 +18,10 @@ var itemList = {
       date: date
     });
   },
-  changeItem: function (position, itemText) {
+  changeItem: function (position, itemText, date) {
     this.items[position].itemText = itemText;
-    return itemText;
+    this.items[position].date = date;
+    return itemText + date;
   },
   deleteItem: function (position) {
     this.items.splice(position, 1);
@@ -73,6 +74,9 @@ var view = {
     deleteBtn = document.createElement('i');
     deleteBtn.className = 'fa fa-window-close';
     return deleteBtn;
+  },
+  createItem: function (item, position, ul) {
+
   },
   enterListener: function () {
     itemInput = document.getElementById('item-txt');
@@ -144,14 +148,15 @@ var handlers = {
     createSaveBtn.className = 'fa fa-floppy-o';
     itemLi.appendChild(input);
     itemLi.appendChild(dateInput);
-    itemLi.appendChild(createSaveBtn);
     view.createDeleteBtn();
+    itemLi.appendChild(createSaveBtn);
     itemLi.appendChild(deleteBtn);
   },
   saveItem: function (position) {
     itemLi = document.getElementById(position.toString());
-    text = itemLi.querySelector('input').value;
-    itemList.changeItem(position, text);
+    textInput = itemLi.querySelector('input').value;
+    dateInput = itemLi.querySelector('input[type="date"]').value;
+    itemList.changeItem(position, textInput, dateInput);
     view.displayItems();
   },
   deleteItem: function (position) {

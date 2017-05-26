@@ -18,7 +18,6 @@ body {
   flex-direction: column;
 
   .list {
-    border: 1px solid $red;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -28,7 +27,7 @@ body {
       color: $olive;
 
       input {
-        margin-left: 4%;
+        margin-right: 2%;
       }
 
       i:nth-of-type(2) {
@@ -40,7 +39,6 @@ body {
         -webkit-box-pack: center;
         -ms-flex-pack: center;
         justify-content: center;
-        margin-right: 2%;
         -webkit-transition: all 0.1s;
         transition: all 0.1s;
 
@@ -122,21 +120,21 @@ body {
 
   .main {
     width: 70%;
-    border: 1px solid goldenrod;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     margin-top: 2em;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
 
     #item-txt {
       width: 60%;
     }
 
     #date-txt {
-      margin-right: 2%;
-      margin-left: 2%;
       -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
@@ -157,7 +155,6 @@ body {
       -webkit-transition: all 0.25s;
       transition: all 0.25s;
       margin-right: 2%;
-      margin-left: 2%;
 
       &:hover {
         color: lighten($maroon, 10%);
