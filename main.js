@@ -78,13 +78,21 @@ var view = {
     itemInput = document.getElementById('item-txt');
     itemInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
-        handlers.addItem();
+        if (itemInput.value === '') {
+          alert('Please enter a 2-do item');
+        } else {
+          handlers.addItem();
+        }
       }
     });
     dateInput = document.getElementById('date-txt');
     dateInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
-        handlers.addItem();
+        if (dateInput.value === '') {
+          alert('Please enter a date');
+        } else {
+          handlers.addItem();
+        }
       }
     });
   },
