@@ -1,5 +1,8 @@
 var itemUl;
 var itemLi;
+var savedItem;
+var listUl;
+var listItem;
 var createItemIcon;
 var deleteBtn;
 var editBtn;
@@ -8,8 +11,7 @@ var textInput;
 var dateInput;
 var btmNav;
 var input;
-var dateField;
-var today = new Date().getDay();
+var today = new Date().getDate();
 var createSaveBtn;
 var elementClicked;
 var viewState;
@@ -56,39 +58,34 @@ var view = {
     itemUl = document.querySelector('ul');
     itemUl.innerHTML = '';
     itemList.items.forEach(function (item, position) {
-      itemLi = document.createElement('li');
-      editBtn = document.createElement('i');
-      editBtn.className = 'fa fa-pencil-square-o';
-      createItemIcon = document.createElement('i');
-      if (item.completed === true) {
-        createItemIcon.className = 'fa fa-check-circle-o';
-      } else {
-        createItemIcon.className = 'fa fa-circle-o';
+      if (viewState === 'All' || viewState === undefined) {
+        this.createItem(item, position);
+      } else if (viewState === 'Completed' && item.completed === true) {
+        this.createItem(item, position);
+      } else if (viewState === 'Active' && item.completed === false) {
+        this.createItem(item, position);
+      } else if (viewState === 'Urgent' && parseInt(item.date.slice(0, 2)) === today) {
+        this.createItem(item, position);
+      } else if (viewState === 'Expired' && item.completed === false && parseInt(item.date.slice(0, 2)) < today) {
+        this.createItem(item, position);
       }
-
-      itemLi.id = position;
-      itemLi.innerHTML = item.itemText + item.date;
-      itemLi.insertBefore(createItemIcon, itemLi.firstChild);
-      itemLi.appendChild(this.createDeleteBtn());
-      itemLi.insertBefore(editBtn, itemLi.lastChild);
-      itemUl.appendChild(itemLi);
     }, this);
   },
-  createItem: function (item, position, ul) {
-    itemUl = document.querySelector('ul');
-    itemUl.innerHTML = '';
+  createItem: function (item, position) {
     itemLi = document.createElement('li');
     editBtn = document.createElement('i');
     editBtn.className = 'fa fa-pencil-square-o';
     createItemIcon = document.createElement('i');
     if (item.completed === true) {
       createItemIcon.className = 'fa fa-check-circle-o';
-      ul = viewState;
-      item.itemText.strike();
     } else {
       createItemIcon.className = 'fa fa-circle-o';
     }
-
+    if (viewState === 'Urgent' && parseInt(item.date.value.slice(0, 2)) === today) {
+      createItemIcon.className = 'fa fa-exclamation-triangle';
+    } else if (viewState === 'Expired' && parseInt(item.date.value.slice(0, 2)) > today) {
+      createItemIcon.className = 'fa fa-exclamation';
+    }
     itemLi.id = position;
     itemLi.innerHTML = item.itemText + item.date;
     itemLi.insertBefore(createItemIcon, itemLi.firstChild);
@@ -115,8 +112,8 @@ var view = {
     dateInput = document.getElementById('date-txt');
     dateInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
-        if (dateInput.value === '') {
-          alert('Please enter a date');
+        if (dateInput.value === '' || dateInput.value.length < 10 || dateInput.value.indexOf(' ') !== -1 || dateInput.value.indexOf('/') !== 2 || dateInput.value.lastIndexOf('/') !== 5 || parseInt(dateInput.value.slice(0, 3)) > 31 || parseInt(dateInput.value.slice(3, 6)) > 12 || parseInt(dateInput.value.slice(6, 10)) < 2015) {
+          alert('Please enter a date in the DD/MM/YYYY format');
         } else {
           handlers.addItem();
         }
@@ -138,11 +135,12 @@ var view = {
       } else if (elementClicked.id === 'expired') {
         viewState = 'Expired';
       }
+      view.displayItems();
     });
   },
   setUpEvents: function () {
-    itemUl = document.querySelector('ul');
-    itemUl.addEventListener('click', function (event) {
+    listUl = document.querySelector('ul');
+    listUl.addEventListener('click', function (event) {
       elementClicked = event.target;
       if (elementClicked.className === 'fa fa-window-close') {
         handlers.deleteItem(elementClicked.parentNode.id);
@@ -183,21 +181,21 @@ var handlers = {
     if (dateInput.value === '') {
       dateInput.placeholder = 'DD/MM/YYYY (Optional)';
     }
-    itemLi = document.getElementById(position.toString());
+    listItem = document.getElementById(position.toString());
     input.value = itemList.items[position].itemText;
-    itemLi.textContent = '';
+    listItem.textContent = '';
     createSaveBtn = document.createElement('i');
     createSaveBtn.className = 'fa fa-floppy-o';
-    itemLi.appendChild(input);
-    itemLi.appendChild(dateInput);
+    listItem.appendChild(input);
+    listItem.appendChild(dateInput);
     view.createDeleteBtn();
-    itemLi.appendChild(createSaveBtn);
-    itemLi.appendChild(deleteBtn);
+    listItem.appendChild(createSaveBtn);
+    listItem.appendChild(deleteBtn);
   },
   saveItem: function (position) {
-    itemLi = document.getElementById(position.toString());
-    textInput = itemLi.querySelector('input').value;
-    dateInput = itemLi.querySelector('input[type="date"]').value;
+    savedItem = document.getElementById(position.toString());
+    textInput = savedItem.querySelector('input').value;
+    dateInput = savedItem.querySelector('input[type="date"]').value;
     itemList.changeItem(position, textInput, dateInput);
     view.displayItems();
   },
