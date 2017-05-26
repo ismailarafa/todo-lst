@@ -5,6 +5,7 @@ var deleteBtn;
 var editBtn;
 var text;
 var itemInput;
+var dateInput;
 var input;
 var createSaveBtn;
 var elementClicked;
@@ -61,7 +62,7 @@ var view = {
       }
 
       itemLi.id = position;
-      itemLi.innerHTML = item.itemText;
+      itemLi.innerHTML = item.itemText + item.date;
       itemLi.insertBefore(createItemIcon, itemLi.firstChild);
       itemLi.appendChild(this.createDeleteBtn());
       itemLi.insertBefore(editBtn, itemLi.lastChild);
@@ -72,6 +73,20 @@ var view = {
     deleteBtn = document.createElement('i');
     deleteBtn.className = 'fa fa-window-close';
     return deleteBtn;
+  },
+  enterListener: function () {
+    itemInput = document.getElementById('item-txt');
+    itemInput.addEventListener('keypress', function (e) {
+      if (e.which === 13 || e.keyCode === 13) {
+        handlers.addItem();
+      }
+    });
+    dateInput = document.getElementById('date-txt');
+    dateInput.addEventListener('keypress', function (e) {
+      if (e.which === 13 || e.keyCode === 13) {
+        handlers.addItem();
+      }
+    });
   },
   setUpEvents: function () {
     itemUl = document.querySelector('ul');
@@ -87,6 +102,9 @@ var view = {
         handlers.changeItem(elementClicked.parentNode.id);
       } else if (elementClicked.className === 'fa fa-floppy-o') {
         handlers.saveItem(elementClicked.parentNode.id);
+        if (itemList.items[elementClicked.parentNode.id].completed === true) {
+          handlers.toggleComplete(elementClicked.parentNode.id);
+        }
       }
     });
   }
@@ -95,20 +113,32 @@ var view = {
 var handlers = {
   addItem: function () {
     itemInput = document.getElementById('item-txt');
-    itemList.addItem(itemInput.value);
+    dateInput = document.getElementById('date-txt');
+    itemList.addItem(itemInput.value, dateInput.value);
     itemInput.value = '';
+    dateInput.value = '';
     view.displayItems();
   },
   changeItem: function (position) {
+    editBtn.className = '';
     input = document.createElement('input');
     input.setAttribute('type', 'text');
+    dateInput = document.createElement('input');
+    dateInput.setAttribute('type', 'date');
+    dateInput.value = itemList.items[position].date;
+    if (dateInput.value === '') {
+      dateInput.placeholder = 'DD/MM/YYYY (Optional)';
+    }
     itemLi = document.getElementById(position.toString());
-    input.value = itemLi.itemText;
-    itemLi.itemText = '';
+    input.value = itemList.items[position].itemText;
+    itemLi.textContent = '';
     createSaveBtn = document.createElement('i');
     createSaveBtn.className = 'fa fa-floppy-o';
     itemLi.appendChild(input);
+    itemLi.appendChild(dateInput);
     itemLi.appendChild(createSaveBtn);
+    view.createDeleteBtn();
+    itemLi.appendChild(deleteBtn);
   },
   saveItem: function (position) {
     itemLi = document.getElementById(position.toString());
@@ -136,3 +166,4 @@ var handlers = {
 };
 
 view.setUpEvents();
+view.enterListener();
