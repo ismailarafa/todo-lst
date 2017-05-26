@@ -3,12 +3,16 @@ var itemLi;
 var createItemIcon;
 var deleteBtn;
 var editBtn;
-var text;
 var itemInput;
+var textInput;
 var dateInput;
+var btmNav;
 var input;
+var dateField;
+var today = new Date().getDay();
 var createSaveBtn;
 var elementClicked;
+var viewState;
 var itemList = {
   items: [],
   addItem: function (itemText, date) {
@@ -31,14 +35,14 @@ var itemList = {
   },
   toggleAll: function () {
     var totalItems = this.items.length;
-    var completedItems = [];
+    var completedItems = 0;
     this.items.forEach(function (item) {
       if (item.completed === true) {
-        completedItems.push(item);
+        completedItems += 1;
       }
     });
     this.items.forEach(function (item) {
-      if (completedItems.length === totalItems) {
+      if (completedItems === totalItems) {
         item.completed = false;
       } else {
         item.completed = true;
@@ -70,13 +74,32 @@ var view = {
       itemUl.appendChild(itemLi);
     }, this);
   },
+  createItem: function (item, position, ul) {
+    itemUl = document.querySelector('ul');
+    itemUl.innerHTML = '';
+    itemLi = document.createElement('li');
+    editBtn = document.createElement('i');
+    editBtn.className = 'fa fa-pencil-square-o';
+    createItemIcon = document.createElement('i');
+    if (item.completed === true) {
+      createItemIcon.className = 'fa fa-check-circle-o';
+      ul = viewState;
+      item.itemText.strike();
+    } else {
+      createItemIcon.className = 'fa fa-circle-o';
+    }
+
+    itemLi.id = position;
+    itemLi.innerHTML = item.itemText + item.date;
+    itemLi.insertBefore(createItemIcon, itemLi.firstChild);
+    itemLi.appendChild(this.createDeleteBtn());
+    itemLi.insertBefore(editBtn, itemLi.lastChild);
+    itemUl.appendChild(itemLi);
+  },
   createDeleteBtn: function () {
     deleteBtn = document.createElement('i');
     deleteBtn.className = 'fa fa-window-close';
     return deleteBtn;
-  },
-  createItem: function (item, position, ul) {
-
   },
   enterListener: function () {
     itemInput = document.getElementById('item-txt');
@@ -97,6 +120,23 @@ var view = {
         } else {
           handlers.addItem();
         }
+      }
+    });
+  },
+  toggleStates: function () {
+    btmNav = document.getElementById('nav');
+    btmNav.addEventListener('click', function (event) {
+      elementClicked = event.target;
+      if (elementClicked.id === 'all') {
+        viewState = 'All';
+      } else if (elementClicked.id === 'active') {
+        viewState = 'Active';
+      } else if (elementClicked.id === 'completed') {
+        viewState = 'Completed';
+      } else if (elementClicked.id === 'urgent') {
+        viewState = 'Urgent';
+      } else if (elementClicked.id === 'expired') {
+        viewState = 'Expired';
       }
     });
   },
@@ -135,8 +175,10 @@ var handlers = {
     editBtn.className = '';
     input = document.createElement('input');
     input.setAttribute('type', 'text');
+    input.id = 'input-txt';
     dateInput = document.createElement('input');
     dateInput.setAttribute('type', 'date');
+    dateInput.id = 'input-date';
     dateInput.value = itemList.items[position].date;
     if (dateInput.value === '') {
       dateInput.placeholder = 'DD/MM/YYYY (Optional)';
@@ -180,3 +222,4 @@ var handlers = {
 
 view.setUpEvents();
 view.enterListener();
+view.toggleStates();
