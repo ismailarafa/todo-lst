@@ -3,6 +3,7 @@ var itemLi;
 var savedItem;
 var listUl;
 var listItem;
+var smol;
 var createItemIcon;
 var deleteBtn;
 var editBtn;
@@ -11,7 +12,6 @@ var textInput;
 var dateInput;
 var btmNav;
 var input;
-var today = new Date().getDate();
 var createSaveBtn;
 var elementClicked;
 var viewState;
@@ -21,13 +21,13 @@ var itemList = {
     this.items.push({
       itemText: itemText,
       completed: false,
-      date: date
+      itemDate: date
     });
   },
-  changeItem: function (position, itemText, date) {
+  changeItem: function (position, itemText, itemDate) {
     this.items[position].itemText = itemText;
-    this.items[position].date = date;
-    return itemText + date;
+    this.items[position].itemDate = itemDate;
+    return itemText + itemDate;
   },
   deleteItem: function (position) {
     this.items.splice(position, 1);
@@ -53,6 +53,12 @@ var itemList = {
   }
 };
 
+var dateObj = {
+  todayDate: new Date().getDate(),
+  todayMonth: new Date().getMonth() + 1,
+  todayYear: new Date().getYear() + 1900
+};
+
 var view = {
   displayItems: function () {
     itemUl = document.querySelector('ul');
@@ -62,11 +68,11 @@ var view = {
         this.createItem(item, position);
       } else if (viewState === 'Completed' && item.completed === true) {
         this.createItem(item, position);
-      } else if (viewState === 'Active' && item.completed === false) {
+      } else if (viewState === 'Active' && item.completed === false && !(parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate && parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth && parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
         this.createItem(item, position);
-      } else if (viewState === 'Urgent' && parseInt(item.date.slice(0, 2)) === today) {
+      } else if (viewState === 'Urgent' && (parseInt(itemList.items[position].itemDate.slice(0, 2)) === dateObj.todayDate && parseInt(itemList.items[position].itemDate.slice(3, 5)) === dateObj.todayMonth && parseInt(itemList.items[position].itemDate.slice(6, 10)) === dateObj.todayYear) && item.completed === false) {
         this.createItem(item, position);
-      } else if (viewState === 'Expired' && item.completed === false && parseInt(item.date.slice(0, 2)) < today) {
+      } else if (viewState === 'Expired' && (parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate && parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth && parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
         this.createItem(item, position);
       }
     }, this);
@@ -74,23 +80,33 @@ var view = {
   createItem: function (item, position) {
     itemLi = document.createElement('li');
     editBtn = document.createElement('i');
+    smol = document.createElement('small');
+    text = document.createElement('span');
     editBtn.className = 'fa fa-pencil-square-o';
     createItemIcon = document.createElement('i');
     if (item.completed === true) {
       createItemIcon.className = 'fa fa-check-circle-o';
+      text.className = ' strike';
+      smol.className = ' strike';
     } else {
       createItemIcon.className = 'fa fa-circle-o';
     }
-    if (viewState === 'Urgent' && parseInt(item.date.value.slice(0, 2)) === today) {
+
+    if (viewState === 'Urgent') {
       createItemIcon.className = 'fa fa-exclamation-triangle';
-    } else if (viewState === 'Expired' && parseInt(item.date.value.slice(0, 2)) > today) {
+    } else if (viewState === 'Expired') {
+      text.className = ' strike';
+      smol.className = ' strike';
       createItemIcon.className = 'fa fa-exclamation';
     }
     itemLi.id = position;
-    itemLi.innerHTML = item.itemText + item.date;
+    text.innerHTML = item.itemText;
+    smol.innerHTML = item.itemDate;
+    itemLi.insertBefore(text, itemLi.firstChild);
     itemLi.insertBefore(createItemIcon, itemLi.firstChild);
-    itemLi.appendChild(this.createDeleteBtn());
     itemLi.insertBefore(editBtn, itemLi.lastChild);
+    itemLi.appendChild(smol);
+    itemLi.insertBefore(this.createDeleteBtn(), itemLi.lastChild.nextSibling);
     itemUl.appendChild(itemLi);
   },
   createDeleteBtn: function () {
@@ -112,8 +128,10 @@ var view = {
     dateInput = document.getElementById('date-txt');
     dateInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
-        if (dateInput.value === '' || dateInput.value.length < 10 || dateInput.value.indexOf(' ') !== -1 || dateInput.value.indexOf('/') !== 2 || dateInput.value.lastIndexOf('/') !== 5 || parseInt(dateInput.value.slice(0, 3)) > 31 || parseInt(dateInput.value.slice(3, 6)) > 12 || parseInt(dateInput.value.slice(6, 10)) < 2015) {
-          alert('Please enter a date in the DD/MM/YYYY format');
+        if (dateInput.value === '' || dateInput.value.length !== 10 || dateInput.value.indexOf(' ') !== -1 || dateInput.value.indexOf('/') !== 2 || dateInput.value.lastIndexOf('/') !== 5 || parseInt(dateInput.value.slice(0, 2)) > 31 || parseInt(dateInput.value.slice(3, 5)) > 12 || parseInt(dateInput.value.slice(6, 10)) < 2015) {
+          alert('Please enter a date in DD/MM/YYYY format');
+        } else if (itemInput.value === '') {
+          alert('Please enter a 2-do item');
         } else {
           handlers.addItem();
         }
@@ -177,7 +195,7 @@ var handlers = {
     dateInput = document.createElement('input');
     dateInput.setAttribute('type', 'date');
     dateInput.id = 'input-date';
-    dateInput.value = itemList.items[position].date;
+    dateInput.value = itemList.items[position].itemDate;
     if (dateInput.value === '') {
       dateInput.placeholder = 'DD/MM/YYYY (Optional)';
     }
