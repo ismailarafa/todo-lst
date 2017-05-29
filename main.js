@@ -68,11 +68,11 @@ var view = {
         this.createItem(item, position);
       } else if (viewState === 'Completed' && item.completed === true) {
         this.createItem(item, position);
-      } else if (viewState === 'Active' && item.completed === false && !(parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate && parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth && parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
+      } else if (viewState === 'Active' && item.completed === false && !(parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate || parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth || parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
         this.createItem(item, position);
       } else if (viewState === 'Urgent' && (parseInt(itemList.items[position].itemDate.slice(0, 2)) === dateObj.todayDate && parseInt(itemList.items[position].itemDate.slice(3, 5)) === dateObj.todayMonth && parseInt(itemList.items[position].itemDate.slice(6, 10)) === dateObj.todayYear) && item.completed === false) {
         this.createItem(item, position);
-      } else if (viewState === 'Expired' && (parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate && parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth && parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
+      } else if (viewState === 'Expired' && (parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate || parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth || parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
         this.createItem(item, position);
       }
     }, this);
