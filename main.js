@@ -6,7 +6,13 @@ var listItem;
 var smol;
 var createItemIcon;
 var deleteBtn;
+var editTxt;
+var editDate;
 var editBtn;
+var savedDateInput;
+var createInputField;
+var text;
+var dateFieldInput;
 var itemInput;
 var textInput;
 var dateInput;
@@ -181,23 +187,23 @@ var view = {
 var handlers = {
   addItem: function () {
     itemInput = document.getElementById('item-txt');
-    dateInput = document.getElementById('date-txt');
-    itemList.addItem(itemInput.value, dateInput.value);
+    dateFieldInput = document.getElementById('date-txt');
+    itemList.addItem(itemInput.value, dateFieldInput.value);
     itemInput.value = '';
-    dateInput.value = '';
+    dateFieldInput.value = '';
     view.displayItems();
   },
   changeItem: function (position) {
     editBtn.className = '';
     input = document.createElement('input');
     input.setAttribute('type', 'text');
-    input.id = 'input-txt';
-    dateInput = document.createElement('input');
-    dateInput.setAttribute('type', 'date');
-    dateInput.id = 'input-date';
-    dateInput.value = itemList.items[position].itemDate;
-    if (dateInput.value === '') {
-      dateInput.placeholder = 'DD/MM/YYYY (Optional)';
+    input.id = 'edit-txt';
+    createInputField = document.createElement('input');
+    createInputField.setAttribute('type', 'date');
+    createInputField.id = 'edit-date';
+    createInputField.value = itemList.items[position].itemDate;
+    if (createInputField.value === '') {
+      createInputField.placeholder = 'DD/MM/YYYY (Optional)';
     }
     listItem = document.getElementById(position.toString());
     input.value = itemList.items[position].itemText;
@@ -205,7 +211,7 @@ var handlers = {
     createSaveBtn = document.createElement('i');
     createSaveBtn.className = 'fa fa-floppy-o';
     listItem.appendChild(input);
-    listItem.appendChild(dateInput);
+    listItem.appendChild(createInputField);
     view.createDeleteBtn();
     listItem.appendChild(createSaveBtn);
     listItem.appendChild(deleteBtn);
@@ -213,8 +219,8 @@ var handlers = {
   saveItem: function (position) {
     savedItem = document.getElementById(position.toString());
     textInput = savedItem.querySelector('input').value;
-    dateInput = savedItem.querySelector('input[type="date"]').value;
-    itemList.changeItem(position, textInput, dateInput);
+    savedDateInput = savedItem.querySelector('input[type="date"]').value;
+    itemList.changeItem(position, textInput, savedDateInput);
     view.displayItems();
   },
   deleteItem: function (position) {

@@ -40,6 +40,19 @@ body {
       color: $olive;
       font-weight: 400;
 
+      #edit-txt {
+        border: none;
+        height: 2em;
+        border-radius: 2px;
+      }
+
+      #edit-date {
+        height: 1.75em;
+        border: none;
+        border-radius: 2px;
+        padding-left: 1%;
+      }
+
       input {
         margin-right: 2%;
       }
