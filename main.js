@@ -70,7 +70,7 @@ var view = {
     itemList.items.forEach(function (item, position) {
       if (!item.completed) {
         counter += 1;
-      } else if (item.completed) {
+      } else {
         counterCompleted += 1;
       }
       if (viewState === 'All' || viewState === undefined) {
@@ -88,6 +88,19 @@ var view = {
     document.getElementById('all').innerHTML = counter + ' All';
     document.getElementById('active').innerHTML = counter + ' Active';
     document.getElementById('completed').innerHTML = counterCompleted + ' Completed';
+
+    if (counter === 0) {
+      document.getElementById('all').innerHTML = 'All';
+      document.getElementById('active').innerHTML = 'Active';
+    }
+    if (counterCompleted === 0) {
+      document.getElementById('completed').innerHTML = 'Completed';
+    }
+  },
+  createDeleteAll: function () {
+    var deleteAll = document.createElement('i');
+    deleteAll.className = 'fa fa-trash-o';
+    return deleteAll;
   },
   createInputField: function (position) {
     var inputField = document.createElement('input');
@@ -193,8 +206,9 @@ var view = {
       } else if (elementClicked.id === 'expired') {
         viewState = 'Expired';
       }
-      view.displayItems();
+      btmNav.childNodes.style.backgroundColor = '#efeffc';
       elementClicked.style.backgroundColor = '#f7f7fd';
+      view.displayItems();
     });
   },
   setUpEvents: function () {
@@ -244,6 +258,11 @@ var handlers = {
     var savedDateInput = savedItem.querySelector('input[type="date"]').value;
     itemList.changeItem(position, textInput, savedDateInput);
     view.displayItems();
+  },
+  deleteAllCompleted: function () {
+    if (!itemList.items[position].completed) {
+      itemList.deleteItem(document.getElementById(position.toString()));
+    }
   },
   deleteItem: function (position) {
     itemList.deleteItem(position);
