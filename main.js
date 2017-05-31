@@ -100,6 +100,10 @@ var view = {
       document.getElementById('completed').innerHTML = 'Completed';
     }
   },
+  hover: function () {
+    document.getElementById('all').style.backgroundColor = '#def2e9';
+    document.getElementById('all').style.color = '#3d9970';
+  },
   createInputField: function (position) {
     var inputField = document.createElement('input');
     inputField.setAttribute('type', 'text');
@@ -283,3 +287,4 @@ var handlers = {
 view.setUpEvents();
 view.enterListener();
 view.toggleStates();
+view.mouseHover();
