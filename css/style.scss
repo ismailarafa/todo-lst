@@ -61,6 +61,7 @@ body {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
+      max-height: 2.75em;
 
       .fa-pencil-square-o {
         margin-left: 2%;
@@ -109,8 +110,14 @@ body {
         border-right: 1px solid $olive;
         background-color: lighten($olive, 49%);
         color: $maroon;
-        -ms-flex-preferred-size: 45%;
-        flex-basis: 45%;
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        max-width: 45%;
+
+        @media (min-width: $break-lrg) {
+          -ms-flex-preferred-size: 67%;
+          flex-basis: 67%;
+        }
       }
 
       #edit-date {
@@ -121,6 +128,7 @@ body {
         border-radius: 0;
         padding-left: 1%;
         color: $maroon;
+        min-width: 25%;
       }
 
       i {
@@ -154,9 +162,6 @@ body {
       margin-right: 1%;
       color: $maroon;
       display: inline;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
       -webkit-transition: all 0.1s;
       transition: all 0.1s;
       -ms-flex-item-align: center;

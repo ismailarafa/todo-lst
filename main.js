@@ -1,4 +1,4 @@
-var viewState;
+var viewState = 'All';
 var itemList = {
   items: [],
   addItem: function (itemText, date) {
@@ -65,20 +65,24 @@ var dateUtils = {
 var view = {
   displayItems: function () {
     var itemUl = document.querySelector('ul');
+    var counterLi = document.getElementById(viewState.toLowerCase());
     itemUl.innerHTML = '';
+    counterLi.innerHTML = viewState;
     itemList.items.forEach(function (item, position) {
       if (viewState === 'All' || viewState === undefined) {
         this.createItem(item, position);
-      } else if (viewState === 'Completed' && item.completed === true) {
+      } else if (viewState === 'Completed' && item.completed) {
         this.createItem(item, position);
-      } else if (viewState === 'Active' && item.completed === false && (dateUtils.isItemActive(itemList.items[position].itemDate))) {
+      } else if (viewState === 'Active' && !item.completed && (dateUtils.isItemActive(itemList.items[position].itemDate))) {
         this.createItem(item, position);
-      } else if (viewState === 'Urgent' && (dateUtils.isItemUrgent(itemList.items[position].itemDate)) && item.completed === false) {
+      } else if (viewState === 'Urgent' && (dateUtils.isItemUrgent(itemList.items[position].itemDate)) && !item.completed) {
         this.createItem(item, position);
-      } else if (viewState === 'Expired' && (dateUtils.isItemExpired(itemList.items[position].itemDate)) && item.completed === false) {
+      } else if (viewState === 'Expired' && (dateUtils.isItemExpired(itemList.items[position].itemDate)) && !item.completed) {
         this.createItem(item, position);
       }
     }, this);
+    counterLi.innerHTML = itemUl.childElementCount + ' ' + counterLi.innerHTML;
+    return counterLi.innerHTML;
   },
   createInputField: function (position) {
     var inputField = document.createElement('input');
@@ -115,7 +119,7 @@ var view = {
     var text = document.createElement('span');
     var createItemIcon = document.createElement('i');
     editBtn.className = 'fa fa-pencil-square-o';
-    if (item.completed === true) {
+    if (item.completed) {
       createItemIcon.className = 'fa fa-check-circle-o';
       text.className = ' strike';
       smol.className = ' strike';
@@ -185,6 +189,7 @@ var view = {
         viewState = 'Expired';
       }
       view.displayItems();
+      elementClicked.style.backgroundColor = '#f7f7fd';
     });
   },
   setUpEvents: function () {
@@ -201,7 +206,7 @@ var view = {
         handlers.changeItem(elementClicked.parentNode.id);
       } else if (elementClicked.className === 'fa fa-floppy-o') {
         handlers.saveItem(elementClicked.parentNode.id);
-        if (itemList.items[elementClicked.parentNode.id].completed === true) {
+        if (itemList.items[elementClicked.parentNode.id].completed) {
           handlers.toggleComplete(elementClicked.parentNode.id);
         }
       }
