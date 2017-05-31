@@ -65,12 +65,12 @@ var view = {
   displayItems: function () {
     var itemUl = document.querySelector('ul');
     var counter = 0;
-    var counterCompleted;
+    var counterCompleted = 0;
     itemUl.innerHTML = '';
     itemList.items.forEach(function (item, position) {
       if (!item.completed) {
         counter += 1;
-      } else if (counter > 0 && item.completed) {
+      } else if (item.completed) {
         counterCompleted += 1;
       }
       if (viewState === 'All' || viewState === undefined) {
@@ -87,6 +87,7 @@ var view = {
     }, this);
     document.getElementById('all').innerHTML = counter + ' All';
     document.getElementById('active').innerHTML = counter + ' Active';
+    document.getElementById('completed').innerHTML = counterCompleted + ' Completed';
   },
   createInputField: function (position) {
     var inputField = document.createElement('input');
