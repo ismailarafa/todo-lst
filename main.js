@@ -11,7 +11,6 @@ var itemList = {
   changeItem: function (position, itemText, itemDate) {
     this.items[position].itemText = itemText;
     this.items[position].itemDate = itemDate;
-    return itemText + itemDate;
   },
   deleteItem: function (position) {
     this.items.splice(position, 1);
@@ -65,10 +64,12 @@ var dateUtils = {
 var view = {
   displayItems: function () {
     var itemUl = document.querySelector('ul');
-    var counterLi = document.getElementById(viewState.toLowerCase());
+    var counter = 0;
     itemUl.innerHTML = '';
-    counterLi.innerHTML = viewState;
     itemList.items.forEach(function (item, position) {
+      if (!item.completed) {
+        counter += 1;
+      }
       if (viewState === 'All' || viewState === undefined) {
         this.createItem(item, position);
       } else if (viewState === 'Completed' && item.completed) {
@@ -81,8 +82,10 @@ var view = {
         this.createItem(item, position);
       }
     }, this);
-    counterLi.innerHTML = itemUl.childElementCount + ' ' + counterLi.innerHTML;
-    return counterLi.innerHTML;
+    if (counter > 0) {
+      document.getElementById('all').innerHTML = counter + ' All';
+      document.getElementById('active').innerHTML = counter + ' Active';
+    }
   },
   createInputField: function (position) {
     var inputField = document.createElement('input');
