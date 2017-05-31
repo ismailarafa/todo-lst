@@ -100,11 +100,6 @@ var view = {
       document.getElementById('completed').innerHTML = 'Completed';
     }
   },
-  createDeleteAll: function () {
-    var deleteAll = document.createElement('i');
-    deleteAll.className = 'fa fa-trash-o';
-    return deleteAll;
-  },
   createInputField: function (position) {
     var inputField = document.createElement('input');
     inputField.setAttribute('type', 'text');
@@ -238,7 +233,6 @@ var view = {
           handlers.toggleComplete(elementClicked.parentNode.id);
         }
       }
-      view.displayItems();
     });
   }
 };
@@ -266,11 +260,6 @@ var handlers = {
     var savedDateInput = savedItem.querySelector('input[type="date"]').value;
     itemList.changeItem(position, textInput, savedDateInput);
     view.displayItems();
-  },
-  deleteAllCompleted: function () {
-    if (!itemList.items[position].completed) {
-      itemList.deleteItem(document.getElementById(position.toString()));
-    }
   },
   deleteItem: function (position) {
     itemList.deleteItem(position);
