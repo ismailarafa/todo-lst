@@ -194,7 +194,9 @@ var view = {
   toggleStates: function () {
     var btmNav = document.getElementById('nav');
     btmNav.addEventListener('click', function (event) {
+      var i;
       var elementClicked = event.target;
+      var navChildren = btmNav.childNodes;
       if (elementClicked.id === 'all') {
         viewState = 'All';
       } else if (elementClicked.id === 'active') {
@@ -206,9 +208,11 @@ var view = {
       } else if (elementClicked.id === 'expired') {
         viewState = 'Expired';
       }
-      btmNav.childNodes.style.backgroundColor = '#efeffc';
-      elementClicked.style.backgroundColor = '#f7f7fd';
+      for (i = 0; i < navChildren.length; i += 1) {
+        navChildren[i].style.backgroundColor = '#efeffc';
+      }
       view.displayItems();
+      elementClicked.style.backgroundColor = '#f7f7fd';
     });
   },
   setUpEvents: function () {

@@ -3,7 +3,7 @@
 $break-lrg: 856px;
 
 body {
-  background-color: lavender;
+  background-color: $aqua;
 }
 
 .container {
@@ -199,7 +199,7 @@ body {
 
       .select {
         color: lighten($maroon, 20%);
-        background-color: lighten(lavender, 4%);
+        background-color: lighten($aqua, 4%);
       }
     }
 
@@ -218,7 +218,7 @@ body {
       max-width: 100%;
       margin: 0;
       line-height: 2.25em;
-      background-color: lighten(lavender, 2%);
+      background-color: lighten($olive, 49%);
 
       .fa-trash-o {
         color: $maroon;
@@ -232,7 +232,7 @@ body {
       &:hover {
         cursor: pointer;
         color: lighten($olive, 20%);
-        background-color: lighten(lavender, 4%);
+        background-color: lighten($aqua, 4%);
       }
     }
   }
