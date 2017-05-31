@@ -3,7 +3,7 @@
 $break-lrg: 856px;
 
 body {
-  background-color: $aqua;
+  background-color: lavender;
 }
 
 .container {
@@ -199,7 +199,7 @@ body {
 
       .select {
         color: lighten($maroon, 20%);
-        background-color: lighten($aqua, 4%);
+        background-color: lighten(lavender, 4%);
       }
     }
 
@@ -232,7 +232,7 @@ body {
       &:hover {
         cursor: pointer;
         color: lighten($olive, 20%);
-        background-color: lighten($aqua, 4%);
+        background-color: lighten(lavender, 4%);
       }
     }
   }

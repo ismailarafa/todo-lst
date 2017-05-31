@@ -85,12 +85,15 @@ var view = {
         this.createItem(item, position);
       }
     }, this);
-    document.getElementById('all').innerHTML = counter + ' All';
+    document.getElementById('all').innerHTML = itemList.items.length + ' All';
     document.getElementById('active').innerHTML = counter + ' Active';
     document.getElementById('completed').innerHTML = counterCompleted + ' Completed';
 
-    if (counter === 0) {
+    if (itemList.items.length === 0) {
       document.getElementById('all').innerHTML = 'All';
+    }
+
+    if (counter === 0) {
       document.getElementById('active').innerHTML = 'Active';
     }
     if (counterCompleted === 0) {
@@ -196,7 +199,7 @@ var view = {
     btmNav.addEventListener('click', function (event) {
       var i;
       var elementClicked = event.target;
-      var navChildren = btmNav.childNodes;
+      var navChildren = btmNav.children;
       if (elementClicked.id === 'all') {
         viewState = 'All';
       } else if (elementClicked.id === 'active') {
@@ -209,10 +212,12 @@ var view = {
         viewState = 'Expired';
       }
       for (i = 0; i < navChildren.length; i += 1) {
-        navChildren[i].style.backgroundColor = '#efeffc';
+        navChildren[i].style.backgroundColor = '#def2e9';
+        navChildren[i].style.color = '#3d9970';
       }
-      view.displayItems();
       elementClicked.style.backgroundColor = '#f7f7fd';
+      elementClicked.style.color = '#85144b';
+      view.displayItems();
     });
   },
   setUpEvents: function () {
@@ -254,7 +259,6 @@ var handlers = {
     listItem.appendChild(view.createDateField(position));
     listItem.appendChild(view.createSaveBtn(position));
     listItem.appendChild(view.createDeleteBtn());
-    view.displayItems();
   },
   saveItem: function (position) {
     var savedItem = document.getElementById(position.toString());
