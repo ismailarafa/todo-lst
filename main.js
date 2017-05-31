@@ -48,9 +48,17 @@ var dateUtils = {
     var isValid = (dateVal.length === '' || dateVal.indexOf(' ') !== -1 || dateVal.indexOf('/') !== 2 || dateVal.lastIndexOf('/') !== 5 || parseInt(dateVal.slice(0, 2)) > 31 || parseInt(dateVal.slice(3, 5)) > 12 || parseInt(dateVal.slice(6, 10)) < 2015);
     return isValid;
   },
+  isItemActive: function (dateVal) {
+    var isActive = !(this.isItemExpired(dateVal));
+    return isActive;
+  },
   isItemUrgent: function (dateVal) {
     var isUrgent = (parseInt(dateVal.slice(0, 2)) === dateObj.todayDate && parseInt(dateVal.slice(3, 5)) === dateObj.todayMonth && parseInt(dateVal.slice(6, 10)) === dateObj.todayYear);
     return isUrgent;
+  },
+  isItemExpired: function (dateVal) {
+    var isExpired = (parseInt(dateVal.slice(6, 10)) < dateObj.todayYear || (parseInt(dateVal.slice(6, 10)) <= dateObj.todayYear && parseInt(dateVal.slice(3, 5)) <= dateObj.todayMonth && parseInt(dateVal.slice(0, 2)) < dateObj.todayDate) || (parseInt(dateVal.slice(6, 10)) <= dateObj.todayYear && parseInt(dateVal.slice(3, 5)) < dateObj.todayMonth));
+    return isExpired;
   }
 };
 
@@ -63,14 +71,41 @@ var view = {
         this.createItem(item, position);
       } else if (viewState === 'Completed' && item.completed === true) {
         this.createItem(item, position);
-      } else if (viewState === 'Active' && item.completed === false && !(parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate || parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth || parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
+      } else if (viewState === 'Active' && item.completed === false && (dateUtils.isItemActive(itemList.items[position].itemDate))) {
         this.createItem(item, position);
       } else if (viewState === 'Urgent' && (dateUtils.isItemUrgent(itemList.items[position].itemDate)) && item.completed === false) {
         this.createItem(item, position);
-      } else if (viewState === 'Expired' && (parseInt(itemList.items[position].itemDate.slice(0, 2)) < dateObj.todayDate || parseInt(itemList.items[position].itemDate.slice(3, 5)) <= dateObj.todayMonth || parseInt(itemList.items[position].itemDate.slice(6, 10)) <= dateObj.todayYear) && item.completed === false) {
+      } else if (viewState === 'Expired' && (dateUtils.isItemExpired(itemList.items[position].itemDate)) && item.completed === false) {
         this.createItem(item, position);
       }
     }, this);
+  },
+  createInputField: function (position) {
+    var inputField = document.createElement('input');
+    inputField.setAttribute('type', 'text');
+    inputField.id = 'edit-txt';
+    if (itemList.items[position].itemText === '' || itemList.items[position].itemText === undefined) {
+      inputField.value = '';
+    } else {
+      inputField.value = itemList.items[position].itemText;
+    }
+    return inputField;
+  },
+  createDateField: function (position) {
+    var dateField = document.createElement('input');
+    dateField.setAttribute('type', 'date');
+    dateField.id = 'edit-date';
+    if (itemList.items[position].itemDate === '') {
+      dateField.placeholder = 'DD/MM/YYYY';
+    } else {
+      dateField.value = itemList.items[position].itemDate;
+    }
+    return dateField;
+  },
+  createSaveBtn: function (position) {
+    var saveBtn = document.createElement('i');
+    saveBtn.className = 'fa fa-floppy-o';
+    return saveBtn;
   },
   createItem: function (item, position) {
     var listUl = document.querySelector('ul');
@@ -117,8 +152,6 @@ var view = {
       if (e.which === 13 || e.keyCode === 13) {
         if (itemInput.value === '') {
           alert('Please enter a 2-do item');
-        } else if (dateUtils.isValidDate(dateInput.value)) {
-          alert('Please enter a date in DD/MM/YYYY format');
         } else {
           handlers.addItem();
         }
@@ -151,7 +184,6 @@ var view = {
       } else if (elementClicked.id === 'expired') {
         viewState = 'Expired';
       }
-      elementClicked.style.backgroundColor = '#f7f7fd';
       view.displayItems();
     });
   },
@@ -187,26 +219,11 @@ var handlers = {
     view.displayItems();
   },
   changeItem: function (position) {
-    var editBtn = document.createElement('i');
-    var createInputField = document.createElement('input');
-    var input = document.createElement('input');
     var listItem = document.getElementById(position.toString());
-    var createSaveBtn = document.createElement('i');
-    editBtn.className = '';
-    input.setAttribute('type', 'text');
-    input.id = 'edit-txt';
-    createInputField.setAttribute('type', 'date');
-    createInputField.id = 'edit-date';
-    createInputField.value = itemList.items[position].itemDate;
-    if (createInputField.value === '') {
-      createInputField.placeholder = 'DD/MM/YYYY (Optional)';
-    }
-    input.value = itemList.items[position].itemText;
     listItem.textContent = '';
-    createSaveBtn.className = 'fa fa-floppy-o';
-    listItem.appendChild(input);
-    listItem.appendChild(createInputField);
-    listItem.appendChild(createSaveBtn);
+    listItem.appendChild(view.createInputField(position));
+    listItem.appendChild(view.createDateField(position));
+    listItem.appendChild(view.createSaveBtn(position));
     listItem.appendChild(view.createDeleteBtn());
   },
   saveItem: function (position) {

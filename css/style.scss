@@ -61,12 +61,12 @@ body {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
 
       .fa-pencil-square-o {
         margin-left: 2%;
+        -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
       }
 
       span {
@@ -98,23 +98,29 @@ body {
         -ms-flex-preferred-size: 9%;
         flex-basis: 9%;
         text-align: center;
+        -ms-flex-item-align: center;
+        align-self: center;
       }
 
       #edit-txt {
         border: none;
-        height: 2em;
-        border-radius: 2px;
+        height: 100%;
+        border-radius: 0;
+        border-right: 1px solid $olive;
+        background-color: lighten($olive, 49%);
+        color: $maroon;
+        -ms-flex-preferred-size: 45%;
+        flex-basis: 45%;
       }
 
       #edit-date {
-        height: 1.75em;
+        height: 95%;
+        background-color: lighten($olive, 49%);
         border: none;
-        border-radius: 2px;
+        border-right: 1px solid $olive;
+        border-radius: 0;
         padding-left: 1%;
-      }
-
-      input {
-        margin-right: 2%;
+        color: $maroon;
       }
 
       i {
@@ -126,6 +132,9 @@ body {
 
         &:first-of-type {
           margin-left: 2%;
+          -ms-flex-item-align: center;
+          -ms-grid-row-align: center;
+          align-self: center;
         }
 
         &:hover {
@@ -150,6 +159,9 @@ body {
       justify-content: center;
       -webkit-transition: all 0.1s;
       transition: all 0.1s;
+      -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 
       @media (min-width: $break-lrg) {
         display: none;
