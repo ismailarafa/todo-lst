@@ -129,6 +129,7 @@ var view = {
   createSaveBtn: function (position) {
     var saveBtn = document.createElement('i');
     saveBtn.className = 'fa fa-floppy-o';
+    saveBtn.id = 'save';
     return saveBtn;
   },
   createItem: function (item, position) {
@@ -139,12 +140,15 @@ var view = {
     var text = document.createElement('span');
     var createItemIcon = document.createElement('i');
     editBtn.className = 'fa fa-pencil-square-o';
+    editBtn.id = 'edit';
     if (item.completed) {
       createItemIcon.className = 'fa fa-check-circle-o';
+      createItemIcon.id = 'true';
       text.className = ' strike';
       smol.className = ' strike';
     } else {
       createItemIcon.className = 'fa fa-circle-o';
+      createItemIcon.id = 'false';
     }
 
     if (viewState === 'Urgent') {
@@ -167,6 +171,7 @@ var view = {
   createDeleteBtn: function () {
     var deleteBtn = document.createElement('i');
     deleteBtn.className = 'fa fa-window-close';
+    deleteBtn.id = 'delete';
     return deleteBtn;
   },
   enterListener: function () {
@@ -175,7 +180,7 @@ var view = {
     itemInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
         if (itemInput.value === '') {
-          alert('Please enter a 2-do item');
+          alert('Please enter valid a 2-do item');
         } else {
           handlers.addItem();
         }
@@ -184,9 +189,9 @@ var view = {
     dateInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
         if (dateUtils.isValidDate(dateInput.value)) {
-          alert('Please enter a date in DD/MM/YYYY format');
+          alert('Please enter a valid date in DD/MM/YYYY format');
         } else if (itemInput.value === '') {
-          alert('Please enter a 2-do item');
+          alert('Please enter valid a 2-do item');
         } else {
           handlers.addItem();
         }
@@ -223,15 +228,15 @@ var view = {
     var eventList = document.querySelector('ul');
     eventList.addEventListener('click', function (event) {
       var elementClicked = event.target;
-      if (elementClicked.className === 'fa fa-window-close') {
+      if (elementClicked.id === 'delete') {
         handlers.deleteItem(elementClicked.parentNode.id);
-      } else if (elementClicked.className === 'fa fa-circle-o') {
+      } else if (elementClicked.id === 'false') {
         handlers.toggleComplete(elementClicked.parentNode.id);
-      } else if (elementClicked.className === 'fa fa-check-circle-o') {
+      } else if (elementClicked.id === 'true') {
         handlers.toggleComplete(elementClicked.parentNode.id);
-      } else if (elementClicked.className === 'fa fa-pencil-square-o') {
+      } else if (elementClicked.id === 'edit') {
         handlers.changeItem(elementClicked.parentNode.id);
-      } else if (elementClicked.className === 'fa fa-floppy-o') {
+      } else if (elementClicked.id === 'save') {
         handlers.saveItem(elementClicked.parentNode.id);
         if (itemList.items[elementClicked.parentNode.id].completed) {
           handlers.toggleComplete(elementClicked.parentNode.id);
@@ -260,10 +265,16 @@ var handlers = {
   },
   saveItem: function (position) {
     var savedItem = document.getElementById(position.toString());
-    var textInput = savedItem.querySelector('input').value;
-    var savedDateInput = savedItem.querySelector('input[type="date"]').value;
-    itemList.changeItem(position, textInput, savedDateInput);
-    view.displayItems();
+    var textInput = document.getElementById('edit-txt').value;
+    var savedDateInput = document.getElementById('edit-date').value;
+    if (textInput === '') {
+      alert('Please enter a valid 2-do item');
+    } else if (dateUtils.isValidDate(savedDateInput)) {
+      alert('Please enter a valid entry with a date in DD/MM/YYYY format');
+    } else {
+      itemList.changeItem(position, textInput, savedDateInput);
+      view.displayItems();
+    }
   },
   deleteItem: function (position) {
     itemList.deleteItem(position);
@@ -287,4 +298,3 @@ var handlers = {
 view.setUpEvents();
 view.enterListener();
 view.toggleStates();
-view.mouseHover();
