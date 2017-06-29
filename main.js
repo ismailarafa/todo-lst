@@ -22,7 +22,7 @@ var itemList = {
     var totalItems = this.items.length;
     var completedItems = 0;
     this.items.forEach(function (item) {
-      if (item.completed === true) {
+      if (item.completed) {
         completedItems += 1;
       }
     });
@@ -44,8 +44,8 @@ var dateObj = {
 
 var dateUtils = {
   isValidDate: function (dateVal) {
-    var isValid = (dateVal.length === '' || dateVal.indexOf(' ') !== -1 || dateVal.indexOf('/') !== 2 || dateVal.lastIndexOf('/') !== 5 || parseInt(dateVal.slice(0, 2)) > 31 || parseInt(dateVal.slice(3, 5)) > 12 || parseInt(dateVal.slice(6, 10)) < 2015);
-    return isValid;
+    var pattern = /^((?:0?[1-9]|[1-2][0-9]|[3][0-1])([/\- ])(?:0?[1-9]|1[0-2])\2(20[0-4][0-9]))$/g;
+    return pattern.test(dateVal);
   },
   isItemActive: function (dateVal) {
     var isActive = !(this.isItemExpired(dateVal));
@@ -181,6 +181,8 @@ var view = {
       if (e.which === 13 || e.keyCode === 13) {
         if (itemInput.value === '') {
           alert('Please enter valid a 2-do item');
+        } else if (!dateUtils.isValidDate(dateInput.value)) {
+          alert('Please enter a valid date');
         } else {
           handlers.addItem();
         }
@@ -188,8 +190,8 @@ var view = {
     });
     dateInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
-        if (dateUtils.isValidDate(dateInput.value)) {
-          alert('Please enter a valid date in DD/MM/YYYY format');
+        if (!dateUtils.isValidDate(dateInput.value)) {
+          alert('Please enter a valid date');
         } else if (itemInput.value === '') {
           alert('Please enter valid a 2-do item');
         } else {
