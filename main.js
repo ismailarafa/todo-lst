@@ -36,28 +36,21 @@ var itemList = {
   }
 };
 
-var dateObj = {
-  todayDate: new Date().getDate(),
-  todayMonth: new Date().getMonth() + 1,
-  todayYear: new Date().getYear() + 1900
-};
-
 var dateUtils = {
+  today: function () {
+    return moment();
+  },
   isValidDate: function (dateVal) {
-    var pattern = /^((?:0?[1-9]|[1-2][0-9]|[3][0-1])([/\- ])(?:0?[1-9]|1[0-2])\2(20[0-4][0-9]))$/g;
-    return pattern.test(dateVal);
+    return moment(dateVal, 'DD-MM-YYYY').isValid();
   },
   isItemActive: function (dateVal) {
-    var isActive = !(this.isItemExpired(dateVal));
-    return isActive;
+    return !(this.isItemExpired(dateVal));
   },
   isItemUrgent: function (dateVal) {
-    var isUrgent = (parseInt(dateVal.slice(0, 2)) === dateObj.todayDate && parseInt(dateVal.slice(3, 5)) === dateObj.todayMonth && parseInt(dateVal.slice(6, 10)) === dateObj.todayYear);
-    return isUrgent;
+    return moment(dateVal, 'DD-MM-YYYY').isSame(this.today(), 'day');
   },
   isItemExpired: function (dateVal) {
-    var isExpired = (parseInt(dateVal.slice(6, 10)) < dateObj.todayYear || (parseInt(dateVal.slice(6, 10)) <= dateObj.todayYear && parseInt(dateVal.slice(3, 5)) <= dateObj.todayMonth && parseInt(dateVal.slice(0, 2)) < dateObj.todayDate) || (parseInt(dateVal.slice(6, 10)) <= dateObj.todayYear && parseInt(dateVal.slice(3, 5)) < dateObj.todayMonth));
-    return isExpired;
+    return moment(dateVal, 'DD-MM-YYYY').isBefore(this.today(), 'day');
   }
 };
 
@@ -66,11 +59,17 @@ var view = {
     var itemUl = document.querySelector('ul');
     var counter = 0;
     var counterCompleted = 0;
+    var counterUrgent = 0;
+    var counterExpired = 0;
     itemUl.innerHTML = '';
     itemList.items.forEach(function (item, position) {
-      if (!item.completed) {
+      if (!item.completed && dateUtils.isItemExpired(item.itemDate)) {
+        counterExpired += 1;
+      } else if (!item.completed && dateUtils.isItemUrgent(item.itemDate)) {
+        counterUrgent += 1;
+      } else if (!item.completed && dateUtils.isItemActive(item.itemDate)) {
         counter += 1;
-      } else {
+      } else if (item.completed) {
         counterCompleted += 1;
       }
       if (viewState === 'All' || viewState === undefined) {
@@ -88,6 +87,8 @@ var view = {
     document.getElementById('all').innerHTML = itemList.items.length + ' All';
     document.getElementById('active').innerHTML = counter + ' Active';
     document.getElementById('completed').innerHTML = counterCompleted + ' Completed';
+    document.getElementById('expired').innerHTML = counterExpired + ' Expired';
+    document.getElementById('urgent').innerHTML = counterUrgent + ' Urgent';
 
     if (itemList.items.length === 0) {
       document.getElementById('all').innerHTML = 'All';
@@ -98,6 +99,12 @@ var view = {
     }
     if (counterCompleted === 0) {
       document.getElementById('completed').innerHTML = 'Completed';
+    }
+    if (counterUrgent === 0) {
+      document.getElementById('urgent').innerHTML = 'Urgent';
+    }
+    if (counterExpired === 0) {
+      document.getElementById('expired').innerHTML = 'Expired';
     }
   },
   hover: function () {
@@ -160,7 +167,10 @@ var view = {
     }
     itemLi.id = position;
     text.innerHTML = item.itemText;
-    smol.innerHTML = item.itemDate;
+    smol.innerHTML = moment(item.itemDate, 'DD-MM-YYYY').startOf('day').from(dateUtils.today().startOf('day'));
+    if (smol.innerHTML === 'a few seconds ago') {
+      smol.innerHTML = 'Today';
+    }
     listUl.appendChild(itemLi);
     itemLi.insertBefore(createItemIcon, itemLi.firstChild);
     itemLi.appendChild(text);

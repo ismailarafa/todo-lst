@@ -2,35 +2,36 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>To-Do list</title>
-    <link rel="stylesheet" href="css/cc-ss.min.css">
-    <link rel="stylesheet" href="css/style.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>To-Do list</title>
+  <link rel="stylesheet" href="css/cc-ss.min.css">
+  <link rel="stylesheet" href="css/style.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <div class="container">
-        <h1>2-Do List</h1>
-        <div class="main">
-            <i onclick="handlers.toggleAll()" id="toggle" class="fa fa-toggle-off"></i>
-            <input id="item-txt" type="text" placeholder="Add Item...">
-            <input id="date-txt" type="date" placeholder="DD/MM/YYYY">
-        </div>
-        <div class="list">
-            <ul>
-            </ul>
-        </div>
-        <ul class="lists" id="nav">
-            <li id="all" onmouseover="view.hover()">All</li>
-            <li id="active" onmouseover="view.hover()">Active</li>
-            <li id="completed" onmouseover="view.hover()">Completed</li>
-            <li id="urgent" onmouseover="view.hover()">Urgent</li>
-            <li id="expired" onmouseover="view.hover()">Expired</li>
-        </ul>
+  <div class="container">
+    <h1>2-Do List</h1>
+    <div class="main">
+      <i onclick="handlers.toggleAll()" id="toggle" class="fa fa-toggle-off"></i>
+      <input id="item-txt" type="text" placeholder="Add Item...">
+      <input id="date-txt" type="date" placeholder="DD/MM/YYYY">
     </div>
-    <script src="main.js"></script>
+    <div class="list">
+      <ul>
+      </ul>
+    </div>
+    <ul class="lists" id="nav">
+      <li id="all" onmouseover="view.hover()">All</li>
+      <li id="active" onmouseover="view.hover()">Active</li>
+      <li id="completed" onmouseover="view.hover()">Completed</li>
+      <li id="urgent" onmouseover="view.hover()">Urgent</li>
+      <li id="expired" onmouseover="view.hover()">Expired</li>
+    </ul>
+  </div>
+  <script src="main.js"></script>
 </body>
 
 </html>
