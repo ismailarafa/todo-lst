@@ -114,7 +114,7 @@ var view = {
   createInputField: function (position) {
     var inputField = document.createElement('input');
     inputField.setAttribute('type', 'text');
-    inputField.id = 'edit-txt';
+    inputField.className = 'edit-txt';
     if (itemList.items[position].itemText === '' || itemList.items[position].itemText === undefined) {
       inputField.value = '';
     } else {
@@ -125,7 +125,7 @@ var view = {
   createDateField: function (position) {
     var dateField = document.createElement('input');
     dateField.setAttribute('type', 'date');
-    dateField.id = 'edit-date';
+    dateField.className = 'edit-date';
     if (itemList.items[position].itemDate === '') {
       dateField.placeholder = 'DD/MM/YYYY';
     } else {
@@ -190,7 +190,7 @@ var view = {
     itemInput.addEventListener('keypress', function (e) {
       if (e.which === 13 || e.keyCode === 13) {
         if (itemInput.value === '') {
-          alert('Please enter valid a 2-do item');
+          alert('Please enter a valid 2-do item');
         } else if (!dateUtils.isValidDate(dateInput.value)) {
           alert('Please enter a valid date');
         } else {
@@ -203,7 +203,7 @@ var view = {
         if (!dateUtils.isValidDate(dateInput.value)) {
           alert('Please enter a valid date');
         } else if (itemInput.value === '') {
-          alert('Please enter valid a 2-do item');
+          alert('Please enter a valid 2-do item');
         } else {
           handlers.addItem();
         }
@@ -276,13 +276,12 @@ var handlers = {
     listItem.appendChild(view.createDeleteBtn());
   },
   saveItem: function (position) {
-    var savedItem = document.getElementById(position.toString());
-    var textInput = document.getElementById('edit-txt').value;
-    var savedDateInput = document.getElementById('edit-date').value;
+    var textInput = document.querySelector('.edit-txt').value;
+    var savedDateInput = document.querySelector('.edit-date').value;
     if (textInput === '') {
       alert('Please enter a valid 2-do item');
-    } else if (dateUtils.isValidDate(savedDateInput)) {
-      alert('Please enter a valid entry with a date in DD/MM/YYYY format');
+    } else if (!dateUtils.isValidDate(savedDateInput)) {
+      alert('Please enter a valid date');
     } else {
       itemList.changeItem(position, textInput, savedDateInput);
       view.displayItems();

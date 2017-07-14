@@ -103,7 +103,7 @@ body {
         align-self: center;
       }
 
-      #edit-txt {
+      .edit-txt {
         border: none;
         height: 100%;
         border-radius: 0;
@@ -120,7 +120,7 @@ body {
         }
       }
 
-      #edit-date {
+      .edit-date {
         height: 95%;
         background-color: lighten($olive, 49%);
         border: none;
