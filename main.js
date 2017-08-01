@@ -276,8 +276,8 @@ var handlers = {
     listItem.appendChild(view.createDeleteBtn());
   },
   saveItem: function (position) {
-    var textInput = document.querySelector('.edit-txt').value;
-    var savedDateInput = document.querySelector('.edit-date').value;
+    var textInput = document.getElementById(position).querySelector('.edit-txt').value;
+    var savedDateInput = document.getElementById(position).querySelector('.edit-date').value;
     if (textInput === '') {
       alert('Please enter a valid 2-do item');
     } else if (!dateUtils.isValidDate(savedDateInput)) {
