@@ -2,11 +2,32 @@
 
 $break-lrg: 856px;
 
+/* Base Styles */
+
 body {
   background-color: lavender;
+
+  li {
+    color: $olive;
+  }
+
+  i {
+    color: $maroon;
+    cursor: pointer;
+
+    &:hover {
+      color: lighten($maroon, 10%);
+    }
+  }
+
+  h1 {
+    border: none;
+  }
 }
 
-.container {
+/* Layout Styles */
+
+.l-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -22,11 +43,8 @@ body {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 
-  h1 {
-    border: none;
-  }
-
-  & > * {
+  & > div,
+  & > ul {
     border: 0.25px solid $maroon;
   }
 
@@ -53,7 +71,6 @@ body {
     }
 
     li {
-      color: $olive;
       font-weight: 400;
       border-bottom: 0.5px solid $olive;
       list-style: none;
@@ -127,27 +144,18 @@ body {
         border-right: 1px solid $olive;
         border-radius: 0;
         padding-left: 1%;
-        color: $maroon;
         min-width: 25%;
       }
 
       i {
-        color: $maroon;
         -webkit-transition: all 0.1s;
         transition: all 0.1s;
-        -ms-flex-preferred-size: 3%;
-        flex-basis: 3%;
 
         &:first-of-type {
           margin-left: 2%;
           -ms-flex-item-align: center;
           -ms-grid-row-align: center;
           align-self: center;
-        }
-
-        &:hover {
-          color: lighten($maroon, 10%);
-          cursor: pointer;
         }
       }
     }
@@ -157,16 +165,12 @@ body {
     }
 
     .fa-window-close {
-      width: 7.25%;
-      margin-left: 1%;
-      margin-right: 1%;
-      color: $maroon;
-      display: inline;
       -webkit-transition: all 0.1s;
       transition: all 0.1s;
       -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
+      float: right;
 
       @media (min-width: $break-lrg) {
         display: none;
@@ -206,7 +210,6 @@ body {
     li {
       -webkit-transition: all 0.25s;
       transition: all 0.25s;
-      color: $olive;
       font-weight: 300;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -219,10 +222,6 @@ body {
       margin: 0;
       line-height: 2.25em;
       background-color: lighten($olive, 49%);
-
-      .fa-trash-o {
-        color: $maroon;
-      }
 
       @media (min-width: $break-lrg) {
         -ms-flex-preferred-size: 20%;
@@ -248,8 +247,6 @@ body {
     height: 2em;
 
     i {
-      color: $maroon;
-      cursor: pointer;
       -ms-flex-preferred-size: 12%;
       flex-basis: 12%;
       display: -webkit-box;
@@ -272,7 +269,6 @@ body {
 
     #item-txt {
       background-color: lighten($olive, 49%);
-      color: $maroon;
       text-align: left;
       height: 100%;
       border-radius: 0;
