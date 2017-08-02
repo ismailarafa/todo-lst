@@ -14,6 +14,8 @@ body {
   i {
     color: $maroon;
     cursor: pointer;
+    -webkit-transition: all 0.1s;
+    transition: all 0.1s;
 
     &:hover {
       color: lighten($maroon, 10%);
@@ -22,6 +24,18 @@ body {
 
   h1 {
     border: none;
+  }
+
+  small {
+    color: lighten($maroon, 10%);
+    font-size: 1.125rem;
+    text-align: center;
+  }
+
+  input,
+  input[type="text"] {
+    color: $maroon;
+    background-color: lighten($olive, 49%);
   }
 }
 
@@ -48,7 +62,7 @@ body {
     border: 0.25px solid $maroon;
   }
 
-  .list {
+  .l-list {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -57,7 +71,6 @@ body {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    background-color: lighten($olive, 49%);
 
     ul {
       display: -webkit-box;
@@ -71,9 +84,7 @@ body {
     }
 
     li {
-      font-weight: 400;
       border-bottom: 0.5px solid $olive;
-      list-style: none;
       margin: 0;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -99,14 +110,7 @@ body {
         }
       }
 
-      .strike {
-        text-decoration: line-through;
-        opacity: 0.5;
-      }
-
       small {
-        color: lighten($maroon, 10%);
-        font-size: 1.25rem;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -115,7 +119,6 @@ body {
         justify-content: flex-end;
         -ms-flex-preferred-size: 9%;
         flex-basis: 9%;
-        text-align: center;
         -ms-flex-item-align: center;
         align-self: center;
       }
@@ -125,8 +128,6 @@ body {
         height: 100%;
         border-radius: 0;
         border-right: 1px solid $olive;
-        background-color: lighten($olive, 49%);
-        color: $maroon;
         -ms-flex-preferred-size: 100%;
         flex-basis: 100%;
         max-width: 45%;
@@ -139,7 +140,6 @@ body {
 
       .edit-date {
         height: 95%;
-        background-color: lighten($olive, 49%);
         border: none;
         border-right: 1px solid $olive;
         border-radius: 0;
@@ -147,16 +147,11 @@ body {
         min-width: 25%;
       }
 
-      i {
-        -webkit-transition: all 0.1s;
-        transition: all 0.1s;
-
-        &:first-of-type {
-          margin-left: 2%;
-          -ms-flex-item-align: center;
-          -ms-grid-row-align: center;
-          align-self: center;
-        }
+      i:first-of-type {
+        margin-left: 2%;
+        -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
       }
     }
 
@@ -165,30 +160,23 @@ body {
     }
 
     .fa-window-close {
-      -webkit-transition: all 0.1s;
-      transition: all 0.1s;
       -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
       float: right;
+      margin-left: 1.25%;
 
       @media (min-width: $break-lrg) {
         display: none;
       }
-
-      &:hover {
-        cursor: pointer;
-        color: lighten($maroon, 10%);
-      }
     }
   }
 
-  .lists {
+  .l-lists {
     list-style: none;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    text-align: center;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -200,17 +188,9 @@ body {
       -webkit-box-direction: normal;
       -ms-flex-direction: row;
       flex-direction: row;
-
-      .select {
-        color: lighten($maroon, 20%);
-        background-color: lighten(lavender, 4%);
-      }
     }
 
     li {
-      -webkit-transition: all 0.25s;
-      transition: all 0.25s;
-      font-weight: 300;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -220,24 +200,15 @@ body {
       flex-direction: column;
       max-width: 100%;
       margin: 0;
-      line-height: 2.25em;
-      background-color: lighten($olive, 49%);
 
       @media (min-width: $break-lrg) {
         -ms-flex-preferred-size: 20%;
         flex-basis: 20%;
       }
-
-      &:hover {
-        cursor: pointer;
-        color: lighten($olive, 20%);
-        background-color: lighten(lavender, 4%);
-      }
     }
   }
 
-  .main {
-    background-color: lighten($olive, 49%);
+  .l-main {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -268,8 +239,6 @@ body {
     }
 
     #item-txt {
-      background-color: lighten($olive, 49%);
-      text-align: left;
       height: 100%;
       border-radius: 0;
       padding: 0;
@@ -287,16 +256,64 @@ body {
     }
 
     #date-txt {
-      background-color: lighten($olive, 49%);
-      color: $maroon;
       border-radius: 2px;
       padding-left: 1%;
-      text-align: center;
       height: 3.47em;
       max-width: 25%;
       -ms-flex-preferred-size: 23%;
       flex-basis: 23%;
       border: none;
     }
+  }
+}
+
+/* Module Styles */
+
+.main {
+  background-color: lighten($olive, 49%);
+
+  #item-txt {
+    text-align: left;
+  }
+
+  #date-txt {
+    text-align: center;
+  }
+}
+
+.list {
+  background-color: lighten($olive, 49%);
+
+  li {
+    font-weight: 400;
+    list-style: none;
+  }
+
+  .strike {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+}
+
+.lists {
+  text-align: center;
+
+  li {
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    font-weight: 300;
+    line-height: 2.25em;
+    background-color: lighten($olive, 49%);
+
+    &:hover {
+      cursor: pointer;
+      color: lighten($olive, 20%);
+      background-color: lighten(lavender, 4%);
+    }
+  }
+
+  .select {
+    color: lighten($maroon, 20%);
+    background-color: lighten(lavender, 4%);
   }
 }

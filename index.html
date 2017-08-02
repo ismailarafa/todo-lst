@@ -14,16 +14,16 @@
 <body>
   <div class="container l-container">
     <h1>2-Do List</h1>
-    <div class="main">
+    <div class="main l-main">
       <i onclick="handlers.toggleAll()" id="toggle" class="fa fa-toggle-off"></i>
       <input id="item-txt" type="text" placeholder="Add Item...">
       <input id="date-txt" type="date" placeholder="DD/MM/YYYY">
     </div>
-    <div class="list">
+    <div class="l-list list">
       <ul>
       </ul>
     </div>
-    <ul class="lists" id="nav">
+    <ul class="l-lists lists" id="nav">
       <li id="all" onmouseover="view.hover()">All</li>
       <li id="active" onmouseover="view.hover()">Active</li>
       <li id="completed" onmouseover="view.hover()">Completed</li>
