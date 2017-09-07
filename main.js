@@ -44,7 +44,7 @@ var dateUtils = {
     return moment(dateVal, 'DD-MM-YYYY').isValid();
   },
   isItemActive: function (dateVal) {
-    return !(this.isItemExpired(dateVal));
+    return !this.isItemExpired(dateVal);
   },
   isItemUrgent: function (dateVal) {
     return moment(dateVal, 'DD-MM-YYYY').isSame(this.today(), 'day');
@@ -76,17 +76,30 @@ var view = {
         this.createItem(item, position);
       } else if (viewState === 'Completed' && item.completed) {
         this.createItem(item, position);
-      } else if (viewState === 'Active' && !item.completed && (dateUtils.isItemActive(itemList.items[position].itemDate))) {
+      } else if (
+        viewState === 'Active' &&
+        !item.completed &&
+        dateUtils.isItemActive(itemList.items[position].itemDate)
+      ) {
         this.createItem(item, position);
-      } else if (viewState === 'Urgent' && (dateUtils.isItemUrgent(itemList.items[position].itemDate)) && !item.completed) {
+      } else if (
+        viewState === 'Urgent' &&
+        dateUtils.isItemUrgent(itemList.items[position].itemDate) &&
+        !item.completed
+      ) {
         this.createItem(item, position);
-      } else if (viewState === 'Expired' && (dateUtils.isItemExpired(itemList.items[position].itemDate)) && !item.completed) {
+      } else if (
+        viewState === 'Expired' &&
+        dateUtils.isItemExpired(itemList.items[position].itemDate) &&
+        !item.completed
+      ) {
         this.createItem(item, position);
       }
     }, this);
     document.getElementById('all').innerHTML = itemList.items.length + ' All';
     document.getElementById('active').innerHTML = counter + ' Active';
-    document.getElementById('completed').innerHTML = counterCompleted + ' Completed';
+    document.getElementById('completed').innerHTML =
+      counterCompleted + ' Completed';
     document.getElementById('expired').innerHTML = counterExpired + ' Expired';
     document.getElementById('urgent').innerHTML = counterUrgent + ' Urgent';
 
@@ -115,7 +128,10 @@ var view = {
     var inputField = document.createElement('input');
     inputField.setAttribute('type', 'text');
     inputField.className = 'edit-txt';
-    if (itemList.items[position].itemText === '' || itemList.items[position].itemText === undefined) {
+    if (
+      itemList.items[position].itemText === '' ||
+      itemList.items[position].itemText === undefined
+    ) {
       inputField.value = '';
     } else {
       inputField.value = itemList.items[position].itemText;
@@ -167,7 +183,9 @@ var view = {
     }
     itemLi.id = position;
     text.innerHTML = item.itemText;
-    smol.innerHTML = moment(item.itemDate, 'DD-MM-YYYY').startOf('day').from(dateUtils.today().startOf('day'));
+    smol.innerHTML = moment(item.itemDate, 'DD-MM-YYYY')
+      .startOf('day')
+      .from(dateUtils.today().startOf('day'));
     if (smol.innerHTML === 'a few seconds ago') {
       smol.innerHTML = 'Today';
     }
@@ -276,8 +294,11 @@ var handlers = {
     listItem.appendChild(view.createDeleteBtn());
   },
   saveItem: function (position) {
-    var textInput = document.getElementById(position).querySelector('.edit-txt').value;
-    var savedDateInput = document.getElementById(position).querySelector('.edit-date').value;
+    var textInput = document.getElementById(position).querySelector('.edit-txt')
+      .value;
+    var savedDateInput = document
+      .getElementById(position)
+      .querySelector('.edit-date').value;
     if (textInput === '') {
       alert('Please enter a valid 2-do item');
     } else if (!dateUtils.isValidDate(savedDateInput)) {
